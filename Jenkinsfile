@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_DEFAULT_REGION = 'ap-south-1'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -11,14 +17,16 @@ pipeline {
                    '''
             }
         }
+        stage('Deploy') {
+            steps {
+                sh '''
+                    docker run --rm -it -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION -v $(pwd)/function.zip:/aws/function.zip amazon/aws-cli lambda update-function-code --function-name poc-ts-node --zip-file fileb://function.zip
+                   '''
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
