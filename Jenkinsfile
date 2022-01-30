@@ -13,14 +13,14 @@ pipeline {
                 sh '''
                     docker build -t poc-ts-lambda -f Dockerfile.app .
                     docker create --name poc-ts-lambda-container poc-ts-lambda
-                    docker cp poc-ts-lambda-container:/app/function.zip function.zip
+                    mkdir dist && docker cp poc-ts-lambda-container:/app/function.zip ./dist/function.zip
                    '''
             }
         }
         stage('Deploy') {
             steps {
                 sh '''
-                    docker run --rm -it -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION -v $(pwd)/function.zip:/aws/function.zip amazon/aws-cli lambda update-function-code --function-name poc-ts-node --zip-file fileb://function.zip
+                    docker run --rm -it -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION -v $(pwd)/dist:/aws amazon/aws-cli lambda update-function-code --function-name poc-ts-node --zip-file fileb://function.zip
                    '''
             }
         }
