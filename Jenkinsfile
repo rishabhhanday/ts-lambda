@@ -4,7 +4,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker run hello-world'
+                sh '''
+                    docker build -t poc-ts-lambda -f Dockerfile.app .
+                    docker start --name poc-ts-lambda-container poc-ts-lambda
+                    docker cp poc-ts-lambda-container:/app/function.zip function.zip
+                   '''
             }
         }
         stage('Test') {
