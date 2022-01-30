@@ -20,6 +20,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
+                    ls
                     docker run --rm -i -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION -v $(pwd):/aws amazon/aws-cli lambda update-function-code --function-name poc-ts-node --zip-file fileb://function.zip
                    '''
             }
