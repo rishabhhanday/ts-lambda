@@ -9,6 +9,7 @@ const conversionHelper: IConversionHelper<AirlineCarriers> =
 const airlineCarriersDao: IAirlineCarriersDao = new AirlineCarriersDao();
 
 exports.handler = async function (event: any) {
+  console.log("*********** START *********")
   const airlineCarriers = conversionHelper.convertFromEvent(event);
   const savedAirlineCarrier: AirlineCarriers = await airlineCarriersDao.save(
     airlineCarriers
