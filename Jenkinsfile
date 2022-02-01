@@ -14,7 +14,7 @@ pipeline {
                     docker container prune -f
                     docker build -t poc-ts-lambda -f Dockerfile.app .
                     docker create --name poc-ts-lambda-container poc-ts-lambda
-                    docker cp poc-ts-lambda-container:/app/function.zip function.zip
+                    docker cp poc-ts-lambda-container:/app/dist/function.zip function.zip
                     docker build -t lambda-deploy -f Dockerfile.deploy .
                    '''
             }
