@@ -17,5 +17,7 @@ exports.handler = async function (event: any) {
   );
 
   console.log("Successfully saved airline carrier details into dynamoDB.");
+  console.log("*********** DONE *********");
   return { savedAirlineCarrier };
 };
+// kenisis for events 
